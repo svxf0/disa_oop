@@ -1,2 +1,1 @@
 privet
-kak dela
