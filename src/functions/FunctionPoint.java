@@ -1,8 +1,23 @@
 package functions;
 
-public class FunctionPoint implements Comparable<FunctionPoint>{
+public class FunctionPoint {
 
     private double x, y;
+
+    public FunctionPoint(double x1, double y1) {
+      x = x1;
+      y = y1;
+    }
+
+    public FunctionPoint(FunctionPoint point) {
+      y = (point.getY());
+      x = (point.getX());
+    }
+
+    public FunctionPoint(){
+      x = 0;
+      y = 0;
+    }
 
     public void setX(double x) {
         this.x = x;
@@ -20,27 +35,7 @@ public class FunctionPoint implements Comparable<FunctionPoint>{
         return y;
     }
 
-    public FunctionPoint(double x, double y) {
-        setX(x);
-        setY(y);
-    }
-
-    public FunctionPoint(FunctionPoint point) {
-        setY(point.getY());
-        setX(point.getX());
-    }
-
-    public FunctionPoint(){
-        setX(0);
-        setY(0);
-    }
-
     public String toString() {
-      return String.valueOf("(" + this.getX() + "; " + this.getY() + ")");
-    }
-
-    @Override
-    public int compareTo(FunctionPoint o) {
-        return Double.compare(this.x, o.x);
+      return "(" + this.getX() + "; " + this.getY() + ")";
     }
 }
