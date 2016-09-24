@@ -31,7 +31,7 @@ public class LinkedListTabulatedFunction implements TabulatedFunction {
       this.prev.next = this.next;
       this.next = this.prev;
       this.point = null;
-      size --;
+      size--;
       return this;
     }
   }
@@ -75,6 +75,17 @@ public class LinkedListTabulatedFunction implements TabulatedFunction {
     }
   }
 
+  public LinkedListTabulatedFunction(FunctionPoint[] points) {
+    if (points.length < 2) {
+      throw new IllegalArgumentException();
+    }
+    header.next = header.prev = header;
+    for (int i = 0; i < points.length; i++) {
+      addNodeToTail(points[i]);
+    }
+  }
+
+
   private FunctionNode addNodeToTail(FunctionPoint point) {
     return header.addBefore(point);
   }
@@ -85,9 +96,9 @@ public class LinkedListTabulatedFunction implements TabulatedFunction {
     }
     currentNode = header.next;
     for (int i = 0; i < index; i++) {
-     currentNode = currentNode.next;
+      currentNode = currentNode.next;
     }
-    return  currentNode;
+    return currentNode;
   }
 
   private FunctionNode addNodeByIndex(int index, FunctionNode node) {
@@ -112,7 +123,7 @@ public class LinkedListTabulatedFunction implements TabulatedFunction {
 
   public double getPointX(int index) {
     if (index < 0 || index > size) {
-      throw new FunctionPointIndexOutOfBoundsException() ;
+      throw new FunctionPointIndexOutOfBoundsException();
     }
     return getNodeByIndex(index).point.getX();
   }
@@ -123,7 +134,7 @@ public class LinkedListTabulatedFunction implements TabulatedFunction {
 
   public FunctionPoint getPoint(int index) {
     if (index < 0 || index > size) {
-      throw new FunctionPointIndexOutOfBoundsException() ;
+      throw new FunctionPointIndexOutOfBoundsException();
     }
     return getNodeByIndex(index).point;
   }
@@ -176,23 +187,15 @@ public class LinkedListTabulatedFunction implements TabulatedFunction {
   }
 
   public void setPoint(int index, FunctionPoint point) throws InappropriateFunctionPointException {
-    if (index < 0 || index > size) {
-      throw new FunctionPointIndexOutOfBoundsException() ;
+    if (index < 0 || index >= size) {
+      throw new FunctionPointIndexOutOfBoundsException();
     }
-    if (caaaanDo(index, point.getX())) {
-      getNodeByIndex(index).point = point;
+    System.out.println((point.getX()));
+    System.out.println(getNodeByIndex(index - 1).point.getX());
+    if ((index >= 1 && point.getX() < getNodeByIndex(index - 1).point.getX()) || (index < size - 1 && point.getX() > getNodeByIndex(index + 1).point.getX())) {
+      throw new InappropriateFunctionPointException();
     }
-    throw new InappropriateFunctionPointException();
-  }
-
-  private boolean caaaanDo(int i, double x) {
-    if (i >= 1 && x < getPointX(i - 1)) {
-      return false;
-    }
-    if (i + 1 > getPointCount() && x > getNodeByIndex(i + 1).point.getX()) {
-      return false;
-    }
-    return true;
+    getNodeByIndex(index).point = point;
   }
 
   public void setPointX(int i, double x) throws InappropriateFunctionPointException {
@@ -201,7 +204,7 @@ public class LinkedListTabulatedFunction implements TabulatedFunction {
 
   public void setPointY(int index, double y) {
     if (index < 0 || index > size) {
-      throw new FunctionPointIndexOutOfBoundsException() ;
+      throw new FunctionPointIndexOutOfBoundsException();
     }
     getNodeByIndex(index).point.setY(y);
   }
@@ -219,7 +222,7 @@ public class LinkedListTabulatedFunction implements TabulatedFunction {
         break;
       }
     }
-    if  (index == 0) {
+    if (index == 0) {
       header.addBefore(point);
       return;
     }
@@ -227,18 +230,28 @@ public class LinkedListTabulatedFunction implements TabulatedFunction {
   }
 
   public void deletePoint(int index) {
-    if (index < 0 || index > size) {
+    if (index < 0 || index >= size) {
       throw new FunctionPointIndexOutOfBoundsException();
     }
     deleteNodeByIndex(index);
   }
 
-  public void printList() {
+  public String getStringFunction() {
     currentNode = header;
+    String string = "" + size;
+    for (int i = 0; i < size; i++) {
+      currentNode = currentNode.next;
+      string += " " + currentNode.point.getX() + " " + currentNode.point.getY();
+    }
+    return string;
+  }
+
+  public void printPoints() {
+    currentNode = header;
+    System.out.println("Size: " + size + "\n");
     for (int i = 0; i < size; i++) {
       currentNode = currentNode.next;
       System.out.println(i + ": " + currentNode.point.toString());
     }
-    System.out.println("Size: " + size + "\n");
   }
 }

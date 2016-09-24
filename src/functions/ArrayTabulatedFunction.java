@@ -39,6 +39,13 @@ public class ArrayTabulatedFunction implements TabulatedFunction {
     pointCount = pointsCount;
   }
 
+  public ArrayTabulatedFunction(FunctionPoint[] allpoints) {
+    if (allpoints.length < 2) {
+      throw new IllegalArgumentException();
+    }
+    points = allpoints;
+  }
+
   public int getPointCount() {
     return pointCount;
   }
@@ -124,7 +131,7 @@ public class ArrayTabulatedFunction implements TabulatedFunction {
   }
 
   public void setPoint(int i, FunctionPoint point) throws InappropriateFunctionPointException{
-    if (i < 0 || i > pointCount) {
+    if (i < 0 || i >= pointCount) {
       throw new FunctionPointIndexOutOfBoundsException() ;
     }
     if (caaaanDo(i, point.getX())) {
@@ -175,7 +182,7 @@ public class ArrayTabulatedFunction implements TabulatedFunction {
   }
 
   public void deletePoint(int index) {
-    if (index < 0 || index > pointCount) {
+    if (index < 0 || index >= pointCount) {
       throw new FunctionPointIndexOutOfBoundsException() ;
     }
     if (pointCount < 3) {
@@ -188,10 +195,27 @@ public class ArrayTabulatedFunction implements TabulatedFunction {
   }
 
   public void printPoints() {
+    System.out.println("Size: " + pointCount + "\n");
     for (int i = 0; i < pointCount; i++) {
       System.out.println(i + ": " + points[i].toString());
     }
-    System.out.println("Sise: " + pointCount + "\n");
+  }
+
+  public String getStringFunction() {
+    String string = "" + this.getPointCount();
+    for (int i = 0; i < pointCount; i++) {
+      string = string + " " + points[i].getX() + " " + points[i].getY();
+    }
+    return string;
+  }
+
+  @Override
+  public String toString() {
+    String string = "";
+    for (int i = 0; i < getPointCount(); i++) {
+      string += points[i].toString() + " ,";
+    }
+    return string.substring(0, string.length() - 2);
   }
 }
 
